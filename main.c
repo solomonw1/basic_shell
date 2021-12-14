@@ -149,6 +149,13 @@ int builtin_command(char **argv)
     resume_fg_job(argv);
     return 1;
   }
+  if(!strcmp(argv[0], "cd)) {
+    if (chdir(argv[1]) != 0) 
+      printf("cd: failed on directory %s", argv[1]);
+    else
+      printf("cd: current directory is %s", argv[1]);
+    return 1;
+  }
   if (!strcmp(argv[0], "&"))    /* Ignore singleton & */
     return 1;
   return 0;                     /* Not a builtin command */
