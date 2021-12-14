@@ -11,7 +11,17 @@
 void eval(char *cmdline);
 int parseline(char *buf, char **argv);
 int builtin_command(char **argv);
+void get_help_page(char **argv);
 
+void get_help_page(char **argv) {
+  int argc = sizeof(argv)/sizeof(argv[0]);
+  if (argc == 1) {
+    printf("| basic_shell help\n");
+    printf("| to get help for a specific command, use \'help COMMAND_NAME\'\n");
+    printf("| Commands:\n");
+  }
+}
+  
 pid_t jobs[MAXJOBS] = {0};
 pid_t fg_job = 0;
 sigjmp_buf buf;
@@ -149,11 +159,15 @@ int builtin_command(char **argv)
     resume_fg_job(argv);
     return 1;
   }
-  if(!strcmp(argv[0], "cd)) {
+  if(!strcmp(argv[0], "cd")) {
     if (chdir(argv[1]) != 0) 
-      printf("cd: failed on directory %s", argv[1]);
+      printf("cd: failed on directory %s\n", argv[1]);
     else
-      printf("cd: current directory is %s", argv[1]);
+      printf("cd: current directory is %s\n", argv[1]);
+    return 1;
+  }
+  if(!strcmp(argv[0], "help")) {
+    get_help_page(argv);
     return 1;
   }
   if (!strcmp(argv[0], "&"))    /* Ignore singleton & */
